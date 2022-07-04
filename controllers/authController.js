@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { v4 as uuid } from 'uuid';
 
 export async function signUp(req, res) {
-
+    
     try {
         const user = req.body;
 
@@ -13,13 +13,13 @@ export async function signUp(req, res) {
         const userSchema = joi.object({
             name: joi.string().required(),
             email: joi.string().email().required(),
-            password: joi.string().required().min(8)
+            password: joi.string().required().min(6)
         });
 
         const { error } = userSchema.validate(user);
 
         if (error) {
-            return res.status(400);
+            return res.sendStatus(400);
         }
 
         /* VERIFICAÇÃO DUPLICIDADE */

@@ -7,9 +7,8 @@ let db = null;
 const mongoClient = new MongoClient(process.env.MONGO_URI);
 
 try {
-    mongoClient.connect(() => {
-        db = mongoClient.db(process.env.MONGO_DATABASE);
-    });
+    await mongoClient.connect()
+    db = mongoClient.db(process.env.MONGO_DATABASE);
 } catch (err) {
     console.log(err);
 }
