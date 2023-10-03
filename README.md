@@ -39,5 +39,93 @@ O Projeto My Wallet foi desenvolvido para fornecer um aplicativo web que ajuda a
 <img style='margin: 2px;' src='https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white'>
 <img style='margin: 2px; width:70px' src='https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white/'>
 </p>
+
+<hr/>
+
+## ⚙️ Rotas
+
+#### <span style='font-weight:bold;'>POST</span> /signUp
+
+Rota que cria uma nova conta de usuário. Se já houver um participante com este e-mail cadastrado, será retornado um erro de código de status 409. Se for bem-sucedido, ele retornará um código de status 201. O corpo da solicitação deve conter:
+```
+{
+  {
+  "name": "johnDoe",
+  "email": "john@doe.com",
+  "password": "123456"
+}
+}
+```
+
+#### <span style='font-weight:bold;'>POST</span> /signIn
+
+Rota que permitirá ao usuário fazer login. Se não houver nenhum usuário com o e-mail cadastrado retornará um erro de código de status 404, se a senha não corresponder às fornecidas no cadastro, retornará um erro de código de status 401. Ele dará um token como resposta.
+
+Todas as rotas após o login precisarão de um token de autenticação:
+```
+headers: { Authorization: `Bearer ${token}` }
+```
+
+#### <span style='font-weight:bold;'>POST</span> /transactions
+
+Cria uma nova transação de receita ou despesa. Todos os campos são obrigatórios e não podem ficar vazios. A solicitação deve incluir um token como cabeçalho. Se algum dos campos estiver vazio, a API retornará um erro de código de status 422 e uma mensagem de erro indicando que todos os campos são obrigatórios e não podem ficar vazios. Ele retorna um código de status 401 se o token não existir ou se não houver nenhuma conta com esse token. O corpo da solicitação deve conter o seguinte:
+
+```
+The request body should be:
+    {
+        {
+        "description": "salario",
+        "amount": 1500
+        }
+    }
+Note that if the amount is a whole number that ends with two zeros (e.g., 1200), do not include a decimal point. Otherwise, if it is a floating-point number or has one zero at the end (e.g., 275.5), include the decimal point.
+```
+
+#### <span style='font-weight:bold;'>GET</span> /transactions
+
+Recupera uma lista das transações de receitas e despesas do usuário. Se não houver transações, ele retornará um array vazio. O corpo da resposta é assim:
+
+```
+The date format is: (DD/MM)
+[
+    {
+        "_id": "644438f94af2cf105bd042b5",
+        "userId": "64443438f3722b44d6394f74",
+        "description": "salário",
+        "type": "entrada",
+        "amount": 1500.89,
+        "date": "10/06"
+    },
+    {
+        "_id": "644439144af2cf105bd042b6",
+        "userId": "64443438f3722b44d6394f74",
+        "description": "conta de luz",
+        "type": "saída",
+        "amount": 150.1,
+        "date": "12/06"
+    }
+]
+```
+
+<hr/>
+
+## Funcionamento:
+
+Para baixar e configurar o projeto, siga estas etapas:
+
+1. Clone o repositório front-end: git clone https://github.com/FellipeLimaT/my_wallet.git
+2. Clone o repositório back-end: git clone https://github.com/FellipeLimaT/my_wallet_API.git
+3. Instale as dependências para ambos os repositórios usando *npm install*
+4. Crie um arquivo *.env* na raiz do diretório back-end, contendo as seguintes variáveis:
+    `
+      MONGO_URI=<your-mongodb-uri>
+      PORT=5000
+    `
+5. Inicie o servidor backend executando npm start no diretório backend.
+6. Inicie o servidor front-end executando npm start no diretório front-end.
+7. Acesse o aplicativo em seu navegador em http://localhost:8000
+
+Nota: Este projeto requer que o MongoDB esteja instalado e em execução. Se você não o tiver instalado, siga as instruções no site (https://www.mongodb.com/try/download/community).
+
   
 
